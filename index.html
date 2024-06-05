@@ -1,0 +1,902 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Parse gdb machine interface output with Python">
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.3.9">
+    
+    
+      
+        <title>pygdbmi</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.1d29e8d0.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#whats-in-the-box" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="pygdbmi" class="md-header__button md-logo" aria-label="pygdbmi" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pygdbmi
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cs01/pygdbmi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cs01/pygdbmi
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="pygdbmi" class="md-nav__button md-logo" aria-label="pygdbmi" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    pygdbmi
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cs01/pygdbmi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cs01/pygdbmi
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Home
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-the-box" class="md-nav__link">
+    What's in the box?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility" class="md-nav__link">
+    Compatibility
+  </a>
+  
+    <nav class="md-nav" aria-label="Compatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operating-systems" class="md-nav__link">
+    Operating Systems
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gdb-versions" class="md-nav__link">
+    gdb versions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programmatic-control-over-gdb" class="md-nav__link">
+    Programmatic Control Over gdb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsed-output-format" class="md-nav__link">
+    Parsed Output Format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    Contributing
+  </a>
+  
+    <nav class="md-nav" aria-label="Contributing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-a-release" class="md-nav__link">
+    Making a release
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dev0" class="md-nav__link">
+    .dev0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#similar-projects" class="md-nav__link">
+    Similar projects
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#projects-using-pygdbmi" class="md-nav__link">
+    Projects Using pygdbmi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authors" class="md-nav__link">
+    Authors
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Api
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Api" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Api
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/gdbmiparser/" class="md-nav__link">
+        gdbmiparser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/gdbcontroller/" class="md-nav__link">
+        gdbcontroller
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/iomanager/" class="md-nav__link">
+        iomanager
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-the-box" class="md-nav__link">
+    What's in the box?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility" class="md-nav__link">
+    Compatibility
+  </a>
+  
+    <nav class="md-nav" aria-label="Compatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operating-systems" class="md-nav__link">
+    Operating Systems
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gdb-versions" class="md-nav__link">
+    gdb versions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programmatic-control-over-gdb" class="md-nav__link">
+    Programmatic Control Over gdb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsed-output-format" class="md-nav__link">
+    Parsed Output Format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    Contributing
+  </a>
+  
+    <nav class="md-nav" aria-label="Contributing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-a-release" class="md-nav__link">
+    Making a release
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dev0" class="md-nav__link">
+    .dev0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#similar-projects" class="md-nav__link">
+    Similar projects
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#projects-using-pygdbmi" class="md-nav__link">
+    Projects Using pygdbmi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authors" class="md-nav__link">
+    Authors
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/cs01/pygdbmi/edit/master/docs/README.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 align="center">
+pygdbmi - Get Structured Output from GDB's Machine Interface
+</h1>
+
+<p align="center">
+
+<a href="https://github.com/cs01/pygdbmi/actions">
+<img src="https://github.com/cs01/pygdbmi/workflows/Tests/badge.svg?branch=master" alt="Test status" /></a>
+
+<a href="https://badge.fury.io/py/pygdbmi">
+<img src="https://badge.fury.io/py/pygdbmi.svg" alt="PyPI version"/></a>
+
+</p>
+
+<p><strong>Documentation</strong> <a href="https://cs01.github.io/pygdbmi">https://cs01.github.io/pygdbmi</a></p>
+<p><strong>Source Code</strong> <a href="https://github.com/cs01/pygdbmi">https://github.com/cs01/pygdbmi</a></p>
+<hr />
+<p>Python (<strong>py</strong>) <a href="https://www.gnu.org/software/gdb/"><strong>gdb</strong></a> machine interface <a href="https://sourceware.org/gdb/onlinedocs/gdb/GDB_002fMI.html">(<strong>mi</strong>)</a></p>
+<blockquote>
+<p>GDB/MI is a line based machine oriented text interface to GDB and is activated by specifying using the --interpreter command line option (see Mode Options). It is specifically intended to support the development of systems which use the debugger as just one small component of a larger system.</p>
+</blockquote>
+<h2 id="whats-in-the-box">What's in the box?</h2>
+<ol>
+<li>A function to parse gdb machine interface string output and return structured data types (Python dicts) that are JSON serializable. Useful for writing the backend to a gdb frontend. For example, <a href="https://github.com/cs01/gdbgui">gdbgui</a> uses pygdbmi on the backend.</li>
+<li>A Python class to control and interact with gdb as a subprocess</li>
+</ol>
+<p>To get <a href="https://sourceware.org/gdb/onlinedocs/gdb/GDB_002fMI.html">machine interface</a> output from gdb, run gdb with the <code>--interpreter=mi2</code> flag like so:</p>
+<div class="codehilite"><pre><span></span><code>gdb --interpreter=mi2
+</code></pre></div>
+
+<h2 id="installation">Installation</h2>
+<div class="codehilite"><pre><span></span><code>pip install pygdbmi
+</code></pre></div>
+
+<h2 id="compatibility">Compatibility</h2>
+<h3 id="operating-systems">Operating Systems</h3>
+<p>Cross platform support for Linux, macOS and Windows</p>
+<ul>
+<li>Linux/Unix</li>
+</ul>
+<p>Ubuntu 14.04 and 16.04 have been tested to work. Other versions likely work as well.</p>
+<ul>
+<li>macOS</li>
+</ul>
+<p>Note: the error <code>please check gdb is codesigned - see taskgated(8)</code> can be fixed by codesigning gdb with <a href="http://andresabino.com/2015/04/14/codesign-gdb-on-mac-os-x-yosemite-10-10-2/">these instructions</a>. If the error is not fixed, please <a href="https://github.com/cs01/pygdbmi/issues">create an issue in github</a>.</p>
+<ul>
+<li>Windows</li>
+</ul>
+<p>Windows 10 has been tested to work with MinGW and cygwin.</p>
+<h3 id="gdb-versions">gdb versions</h3>
+<ul>
+<li>gdb 7.6+ has been tested. Older versions may work as well.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>gdb mi defines a syntax for its output that is suitable for machine readability and scripting: <a href="https://sourceware.org/gdb/onlinedocs/gdb/GDB_002fMI-Simple-Examples.html#GDB_002fMI-Simple-Examples">example output</a>:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">-&gt;</span> <span class="o">-</span><span class="n">break</span><span class="o">-</span><span class="n">insert</span> <span class="n">main</span>
+<span class="o">&lt;-</span> <span class="o">^</span><span class="n">done</span><span class="p">,</span><span class="n">bkpt</span><span class="o">=</span><span class="p">{</span><span class="n">number</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;breakpoint&quot;</span><span class="p">,</span><span class="n">disp</span><span class="o">=</span><span class="s">&quot;keep&quot;</span><span class="p">,</span>
+<span class="n">enabled</span><span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span><span class="n">addr</span><span class="o">=</span><span class="s">&quot;0x08048564&quot;</span><span class="p">,</span><span class="n">func</span><span class="o">=</span><span class="s">&quot;main&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="s">&quot;myprog.c&quot;</span><span class="p">,</span>
+<span class="n">fullname</span><span class="o">=</span><span class="s">&quot;/home/myprog.c&quot;</span><span class="p">,</span><span class="n">line</span><span class="o">=</span><span class="s">&quot;68&quot;</span><span class="p">,</span><span class="n">thread</span><span class="o">-</span><span class="n">groups</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;i1&quot;</span><span class="p">],</span>
+<span class="n">times</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">}</span>
+<span class="o">&lt;-</span> <span class="p">(</span><span class="n">gdb</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Use <code>pygdbmi.gdbmiparser.parse_response</code> to turn that string output into a JSON serializable dictionary</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygdbmi</span> <span class="kn">import</span> <span class="n">gdbmiparser</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmiparser</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="s1">&#39;^done,bkpt={number=&quot;1&quot;,type=&quot;breakpoint&quot;,disp=&quot;keep&quot;, enabled=&quot;y&quot;,addr=&quot;0x08048564&quot;,func=&quot;main&quot;,file=&quot;myprog.c&quot;,fullname=&quot;/home/myprog.c&quot;,line=&quot;68&quot;,thread-groups=[&quot;i1&quot;],times=&quot;0&quot;&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="c1"># Prints:</span>
+<span class="c1"># {&#39;message&#39;: &#39;done&#39;,</span>
+<span class="c1">#  &#39;payload&#39;: {&#39;bkpt&#39;: {&#39;addr&#39;: &#39;0x08048564&#39;,</span>
+<span class="c1">#                       &#39;disp&#39;: &#39;keep&#39;,</span>
+<span class="c1">#                       &#39;enabled&#39;: &#39;y&#39;,</span>
+<span class="c1">#                       &#39;file&#39;: &#39;myprog.c&#39;,</span>
+<span class="c1">#                       &#39;fullname&#39;: &#39;/home/myprog.c&#39;,</span>
+<span class="c1">#                       &#39;func&#39;: &#39;main&#39;,</span>
+<span class="c1">#                       &#39;line&#39;: &#39;68&#39;,</span>
+<span class="c1">#                       &#39;number&#39;: &#39;1&#39;,</span>
+<span class="c1">#                       &#39;thread-groups&#39;: [&#39;i1&#39;],</span>
+<span class="c1">#                       &#39;times&#39;: &#39;0&#39;,</span>
+<span class="c1">#                       &#39;type&#39;: &#39;breakpoint&#39;}},</span>
+<span class="c1">#  &#39;token&#39;: None,</span>
+<span class="c1">#  &#39;type&#39;: &#39;result&#39;}</span>
+</code></pre></div>
+
+<h2 id="programmatic-control-over-gdb">Programmatic Control Over gdb</h2>
+<p>But how do you get the gdb output into Python in the first place? If you want, <code>pygdbmi</code> also has a class to control gdb as subprocess. You can write commands, and get structured output back:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygdbmi.gdbcontroller</span> <span class="kn">import</span> <span class="n">GdbController</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="c1"># Start gdb process</span>
+<span class="n">gdbmi</span> <span class="o">=</span> <span class="n">GdbController</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gdbmi</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>  <span class="c1"># print actual command run as subprocess</span>
+<span class="c1"># Load binary a.out and get structured response</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-file-exec-file a.out&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="c1"># Prints:</span>
+<span class="c1"># [{&#39;message&#39;: &#39;thread-group-added&#39;,</span>
+<span class="c1">#   &#39;payload&#39;: {&#39;id&#39;: &#39;i1&#39;},</span>
+<span class="c1">#   &#39;stream&#39;: &#39;stdout&#39;,</span>
+<span class="c1">#   &#39;token&#39;: None,</span>
+<span class="c1">#   &#39;type&#39;: &#39;notify&#39;},</span>
+<span class="c1">#  {&#39;message&#39;: &#39;done&#39;,</span>
+<span class="c1">#   &#39;payload&#39;: None,</span>
+<span class="c1">#   &#39;stream&#39;: &#39;stdout&#39;,</span>
+<span class="c1">#   &#39;token&#39;: None,</span>
+<span class="c1">#   &#39;type&#39;: &#39;result&#39;}]</span>
+</code></pre></div>
+
+<p>Now do whatever you want with gdb. All gdb commands, as well as gdb <a href="(https://sourceware.org/gdb/onlinedocs/gdb/GDB_002fMI-Input-Syntax.html#GDB_002fMI-Input-Syntax)">machine interface commands</a> are acceptable. gdb mi commands give better structured output that is machine readable, rather than gdb console output. mi commands begin with a <code>-</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-break-insert main&#39;</span><span class="p">)</span>  <span class="c1"># machine interface (MI) commands start with a &#39;-&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;break main&#39;</span><span class="p">)</span>  <span class="c1"># normal gdb commands work too, but the return value is slightly different</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-exec-run&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;run&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-exec-next&#39;</span><span class="p">,</span> <span class="n">timeout_sec</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># the wait time can be modified from the default of 1 second</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">raise_error_on_timeout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">raise_error_on_timeout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout_sec</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-exec-continue&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">send_signal_to_gdb</span><span class="p">(</span><span class="s1">&#39;SIGKILL&#39;</span><span class="p">)</span>  <span class="c1"># name of signal is okay</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">send_signal_to_gdb</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># value of signal is okay too</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">interrupt_gdb</span><span class="p">()</span>  <span class="c1"># sends SIGINT to gdb</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;continue&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gdbmi</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="parsed-output-format">Parsed Output Format</h2>
+<p>Each parsed gdb response consists of a list of dictionaries. Each dictionary has keys <code>message</code>, <code>payload</code>, <code>token</code>, and <code>type</code>.</p>
+<ul>
+<li><code>message</code> contains a textual message from gdb, which is not always present. When missing, this is <code>None</code>.</li>
+<li><code>payload</code> contains the content of gdb's output, which can contain any of the following: <code>dictionary</code>, <code>list</code>, <code>string</code>. This too is not always present, and can be <code>None</code> depending on the response.</li>
+<li><code>token</code> If an input command was prefixed with a (optional) token then the corresponding output for that command will also be prefixed by that same token. This field is only present for pygdbmi output types <code>nofity</code> and <code>result</code>. When missing, this is <code>None</code>.</li>
+</ul>
+<p>The <code>type</code> is defined based on gdb's various <a href="(https://sourceware.org/gdb/onlinedocs/gdb/GDB_002fMI-Output-Records.html#GDB_002fMI-Output-Records)">mi output record types</a>, and can be</p>
+<ul>
+<li><code>result</code> - the result of a gdb command, such as <code>done</code>, <code>running</code>, <code>error</code>, etc.</li>
+<li><code>notify</code> - additional async changes that have occurred, such as breakpoint modified</li>
+<li><code>console</code> - textual responses to cli commands</li>
+<li><code>log</code> - debugging messages from gdb's internals</li>
+<li><code>output</code> - output from target</li>
+<li><code>target</code> - output from remote target</li>
+<li><code>done</code> - when gdb has finished its output</li>
+</ul>
+<h2 id="contributing">Contributing</h2>
+<p>Documentation fixes, bug fixes, performance improvements, and functional improvements are welcome. You may want to create an issue before beginning work to make sure I am interested in merging it to the master branch.</p>
+<p>pygdbmi uses <a href="https://github.com/theacodes/nox">nox</a> for automation.</p>
+<p>See available tasks with</p>
+<div class="codehilite"><pre><span></span><code>nox -l
+</code></pre></div>
+
+<p>Run tests and lint with</p>
+<div class="codehilite"><pre><span></span><code>nox -s tests
+nox -s lint
+</code></pre></div>
+
+<p>Positional arguments passed to <code>nox -s tests</code> are passed directly to <code>pytest</code>. For instance, to run only the parse tests use</p>
+<div class="codehilite"><pre><span></span><code>nox -s tests -- tests/test_gdbmiparser.py
+</code></pre></div>
+
+<p>See <a href="https://docs.pytest.org/"><code>pytest</code>'s documentation</a> for more details on how to run tests.</p>
+<p>To format code using the correct settings use</p>
+<div class="codehilite"><pre><span></span><code>nox -s format
+</code></pre></div>
+
+<p>Or, to format only specified files, use</p>
+<div class="codehilite"><pre><span></span><code>nox -s format -- example.py pygdbmi/IoManager.py
+</code></pre></div>
+
+<h3 id="making-a-release">Making a release</h3>
+<p>Only maintainers of the <a href="https://pypi.org/project/pygdbmi/">pygdbmi package on PyPi</a> can make a release.</p>
+<p>In the following steps, replace these strings with the correct values:</p>
+<ul>
+<li><code>&lt;REMOTE&gt;</code> is the name of the remote for the main pygdbmi repository (for instance, <code>origin</code>)</li>
+<li><code>&lt;VERSION&gt;</code> is the version number chosen in step 2.</li>
+</ul>
+<p>To make a release:</p>
+<ol>
+<li>Checkout the <code>master</code> branch and pull from the main repository with <code>git pull &lt;REMOTE&gt; master</code></li>
+<li>Decide the version number for the new release; we follow
+   <a href="https://semver.org/">Semantic Versioning</a> but prefixing the version with <code>0.</code>: given a version
+   number <em>0.SECOND.THIRD.FOURTH</em>, increment the:</li>
+<li><em>SECOND</em> component when you make incompatible API changes</li>
+<li><em>THIRD</em> component when you add functionality in a backwards compatible manner</li>
+<li><em>FOURTH</em> component when you make backwards compatible bug fixes</li>
+<li>Update <code>CHANGELOG.md</code> to list the chosen version number instead of <code>## dev</code></li>
+<li>Update <code>__version__</code> in <code>pygdbmi/__init__.py</code> to the chosen version number</li>
+<li>Create a branch, for instance using <code>git checkout -b before-release-&lt;VERSION&gt;</code></li>
+<li>Commit your changes, for instance using <code>git commit -a -m 'Bump version to &lt;VERSION&gt; for release'</code></li>
+<li>Check that the docs look fine by serving them locally with <code>nox -s serve_docs</code></li>
+<li>Push the branch, for instance with <code>git push --set-upstream &lt;REMOTE&gt; before-release-&lt;VERSION&gt;</code></li>
+<li>If tests pass on the PR you created, you can merge into <code>master</code></li>
+<li>Go to the <a href="https://github.com/cs01/pygdbmi/releases/new">new release page</a> and prepare the
+    release:<ul>
+<li>Add a tag in the form <code>v&lt;VERSION&gt;</code> (for example <code>v0.1.2.3</code>)</li>
+<li>Set the title to <code>pygdbmi v&lt;VERSION&gt;</code> (for example <code>pygdbmi v0.1.2.3</code>)</li>
+<li>Copy and paste the section for the new release only from <code>CHANGELOG.md</code> excluding the line
+  with the version number</li>
+<li>Press “Publish release”</li>
+</ul>
+</li>
+<li>Publish the release to PyPI with <code>nox -s publish</code></li>
+<li>Publish the docs with <code>nox -s publish_docs</code></li>
+<li>Verify that the <a href="https://pypi.org/project/pygdbmi/">PyPi page for pygdbmi</a> looks correct</li>
+<li>Verify that the <a href="https://cs01.github.io/pygdbmi/">published docs</a> look correct</li>
+<li>
+<p>Prepare for changes for the next release by adding something like this above the previous
+    entries in <code>CHANGELOG.md</code> (where <code>&lt;VERSION+1&gt;</code> is <code>&lt;VERSION&gt;</code> with the last digit increaded
+    by 1):</p>
+<p>```</p>
+<h2 id="dev0"><VERSION+1>.dev0</h2>
+<ul>
+<li><em>Replace this line with new entries</em>
+```</li>
+</ul>
+</li>
+<li>
+<p>Create a branch for the changes with <code>git checkout -b after-release-&lt;VERSION&gt;</code></p>
+</li>
+<li>Commit the change with <code>git commit -m 'Prepare for work on the next release' CHANGELOG.md</code></li>
+<li>Push the branch with <code>git push --set-upstream &lt;REMOTE&gt; after-release-&lt;VERSION&gt;</code></li>
+<li>If tests pass, merge into <code>master</code></li>
+</ol>
+<h2 id="similar-projects">Similar projects</h2>
+<ul>
+<li><a href="https://github.com/Guyutongxue/tsgdbmi">tsgdbmi</a> A port of pygdbmi to TypeScript</li>
+<li><a href="https://github.com/danielzfranklin/gdbmi">danielzfranklin/gdbmi</a> A port of pygdbmi to Rust</li>
+</ul>
+<h2 id="projects-using-pygdbmi">Projects Using pygdbmi</h2>
+<ul>
+<li><a href="https://github.com/cs01/gdbgui">gdbgui</a> implements a browser-based frontend to gdb, using pygdbmi on the backend</li>
+<li><a href="https://github.com/korcankaraokcu/PINCE">PINCE</a> is a gdb frontend that aims to provide a reverse engineering tool and a reusable library focused on games. It uses pygdbmi to parse gdb/mi based output for some functions</li>
+<li><a href="https://github.com/avatartwo/avatar2">avatar²</a> is an orchestration framework for reversing and analysing firmware of embedded devices. It utilizes pygdbmi for internal communication to different analysis targets.</li>
+<li><a href="https://undo.io/udb">UDB</a> is a proprietary time-travel debugger for C and C++ based on GDB. It uses pygdbmi in its extensive test suite to parse the debugger's output.</li>
+<li><a href="https://github.com/AlEscher/pwndbg-gui">pwndbg-gui</a> is a user-friendly graphical interface for <a href="https://github.com/pwndbg/pwndbg">pwndbg</a>, a tool that simplifies exploit development and reverse engineering with GDB. It uses pygdbmi to interact with GDB and get structured responses.</li>
+<li>Know of another project? Create a PR and add it here.</li>
+</ul>
+<h2 id="authors">Authors</h2>
+<ul>
+<li><a href="https://github.com/cs01">Chad Smith</a> (main author and creator).</li>
+<li><a href="http://www.barisione.org/">Marco Barisione</a> (co-maintainer).</li>
+<li><a href="https://github.com/cs01/pygdbmi/graphs/contributors">The community</a>. Thanks especially to @mariusmue, @bobthekingofegypt, @mouuff, and @felipesere.</li>
+</ul>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+      
+        
+        <a href="api/gdbmiparser/" class="md-footer__link md-footer__link--next" aria-label="Next: gdbmiparser" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              gdbmiparser
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.6c7ad80a.min.js"></script>
+      
+    
+  </body>
+</html>
