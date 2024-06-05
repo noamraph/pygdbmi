@@ -21,14 +21,14 @@ with open("pygdbmi/__init__.py") as fd:
 
 
 setup(
-    name="pygdbmi",
+    name="pygdbmi-stop-on-result",
     version=version,
-    author="Chad Smith",
-    author_email="grassfedcode@gmail.com",
-    description="Parse gdb machine interface output with Python",
+    author="Noam Yorav-Raphael",
+    author_email="noamraph@gmail.com",
+    description="Parse gdb machine interface output with Python - fork to support fast return when a result is available",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/cs01/pygdbmi",
+    url="https://github.com/noamraph/pygdbmi",
     license="MIT",
     packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES),
     include_package_data=True,
